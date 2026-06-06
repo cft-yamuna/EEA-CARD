@@ -608,6 +608,22 @@ h1 {
   margin-inline: auto;
 }
 
+.gallery-shell {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.gallery-shell .header-bar,
+.gallery-shell .gallery-toolbar,
+.gallery-shell .status {
+  flex: 0 0 auto;
+}
+
+.gallery-shell .gallery-toolbar {
+  padding-block: 0;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -615,6 +631,17 @@ h1 {
   width: min(100%, 72rem);
   margin-inline: auto;
   padding-bottom: 28px;
+}
+
+.gallery-shell .gallery-grid,
+.gallery-shell .empty-state {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.gallery-shell .gallery-grid {
+  overflow: hidden;
+  padding-bottom: 0;
 }
 
 .image-card {

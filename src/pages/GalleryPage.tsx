@@ -38,7 +38,7 @@ export function GalleryPage(): ReactElement {
   }, []);
 
   return (
-    <main className="app-shell">
+    <main className="app-shell gallery-shell">
       <HeaderBar
         title="Cards"
         subtitle="Newest uploads first"
