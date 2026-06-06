@@ -61,16 +61,43 @@ export function CameraCapture({ onCapture }: CameraCaptureProps): ReactElement {
       return;
     }
 
+    const frameRect = video.parentElement?.getBoundingClientRect();
+    const frameAspect =
+      frameRect && frameRect.width > 0 && frameRect.height > 0 ? frameRect.width / frameRect.height : 3 / 4;
+    const videoAspect = video.videoWidth / video.videoHeight;
+    let sourceX = 0;
+    let sourceY = 0;
+    let sourceWidth = video.videoWidth;
+    let sourceHeight = video.videoHeight;
+
+    if (videoAspect > frameAspect) {
+      sourceWidth = video.videoHeight * frameAspect;
+      sourceX = (video.videoWidth - sourceWidth) / 2;
+    } else {
+      sourceHeight = video.videoWidth / frameAspect;
+      sourceY = (video.videoHeight - sourceHeight) / 2;
+    }
+
     const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = Math.round(sourceWidth);
+    canvas.height = Math.round(sourceHeight);
     const context = canvas.getContext("2d");
     if (context) {
       if (cameraFacing === "user") {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
       }
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      context.drawImage(
+        video,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      );
     }
     onCapture(canvas.toDataURL("image/jpeg", 0.92));
   }, [cameraFacing, onCapture]);
