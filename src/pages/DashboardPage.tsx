@@ -6,7 +6,6 @@ import { ImagePreview } from "../components/ImagePreview";
 import { StatusBanner } from "../components/StatusBanner";
 import { uploadImage, type ImageSource } from "../lib/imageStorage";
 import { hasSupabaseConfig } from "../lib/supabaseConfig";
-import { dataUrlToImageFile } from "../utils/file";
 
 interface DashboardPageProps {
   userEmail: string;
@@ -37,9 +36,8 @@ export function DashboardPage({ userEmail, onSignOut }: DashboardPageProps): Rea
     return pendingImage?.source === "camera" ? "capture" : "upload";
   }, [pendingImage?.source]);
 
-  function handleCapture(imageDataUrl: string): void {
-    const file = dataUrlToImageFile(imageDataUrl, `capture-${Date.now()}.jpg`);
-    setPendingImage({ source: "camera", file, previewUrl: imageDataUrl });
+  function handleCapture(file: File, previewUrl: string): void {
+    setPendingImage({ source: "camera", file, previewUrl });
     setStatus(null);
   }
 
@@ -131,7 +129,7 @@ export function DashboardPage({ userEmail, onSignOut }: DashboardPageProps): Rea
           onConfirm={handleConfirm}
         />
       ) : (
-        <>
+        <section className="native-action-stack" aria-label="Capture or upload image">
           <CameraCapture onCapture={handleCapture} />
           <section className="upload-panel" aria-label="Upload image">
             <input
@@ -146,7 +144,7 @@ export function DashboardPage({ userEmail, onSignOut }: DashboardPageProps): Rea
               <span>Upload</span>
             </button>
           </section>
-        </>
+        </section>
       )}
     </main>
   );
