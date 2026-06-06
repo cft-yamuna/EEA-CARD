@@ -40,7 +40,7 @@ export function GalleryPage(): ReactElement {
   return (
     <main className="app-shell">
       <HeaderBar
-        title="Card Library"
+        title="Cards"
         subtitle="Newest uploads first"
         onBack={() => navigate("/dashboard")}
       />
